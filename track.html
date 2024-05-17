@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Script</title>
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // Function to extract URL parameters
+    function getUrlParams(url) {
+        const params = {};
+        const urlParams = new URLSearchParams(url);
+        for (const [key, value] of urlParams) {
+            params[key] = value;
+        }
+        return params;
+    }
+
+    // Function to save tracking data to Supabase
+    async function saveTrackingData(url) {
+        const params = getUrlParams(url);
+        console.log(params)
+        if (!params.id) return; // If id param doesn't exist, don't save
+        const id = params.id;
+
+        // Exclude the 'id' parameter when stringifying the 'params' object
+        // delete params.id;
+        const trackingData = JSON.stringify(params);
+        console.log(trackingData)
+
+        const supabase = window.supabase.createClient('https://szvbvfoaierkvgjqdnjo.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6dmJ2Zm9haWVya3ZnanFkbmpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTU1MjQyMTIsImV4cCI6MjAzMTEwMDIxMn0.40vTgs6yq5Rft3H5jU1GhfRPfsfWp10P157J6ZFRBKw');
+
+        try {
+            const { data, error } = await supabase.from('track').insert([{ id, tracking_data: trackingData }]);
+            if (error) {
+                throw new Error('Error saving tracking data:', error.message);
+            }
+            console.log('Tracking data saved successfully:', data);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    // Usage: Call this function with the current URL to save tracking data
+    saveTrackingData(window.location.search);
+</script>
+</body>
+</html>
