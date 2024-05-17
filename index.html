@@ -117,7 +117,7 @@
                         document.getElementById("progressBar").classList.add("bg-green-600")
                         const formData = new FormData();
                         formData.append('excelFile', file);
-                        fetch('http://localhost:3000/generate-qr-codes', {
+                        fetch('https://qr-code-generator-from-excel.onrender.com/generate-qr-codes', {
                             method: 'POST',
                             body: formData
                         }).then(x => x.text())
