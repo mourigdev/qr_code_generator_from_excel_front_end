@@ -122,8 +122,8 @@
                             body: formData
                         }).then(x => x.text())
                         .then(y => {
-                            // let download_link = y.replace('http:','https:');
-                            document.getElementById('my_iframe').src = y
+                            let download_link = y.replace('http:','https:');
+                            document.getElementById('my_iframe').src = download_link
                         });
                         clearInterval(interval);
                         document.getElementById('progressText').innerText = "Upload complete";
